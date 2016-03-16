@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Simple Currency Widget</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="configure">Configure Simple Currency Widget</string>
+    <string name="add_widget">Add widget</string>
+    <string name="rateDisplayText">No Rate</string>
+    <string name="baseCounterCurrencyText">Not Set/Not Set</string>
+    <string name="widgetRefreshTimeText">Not Updated</string>
+    <string name="rateAsOfTimeText">Not Updated</string>
 </resources>
