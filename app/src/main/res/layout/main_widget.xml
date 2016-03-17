@@ -1,0 +1,68 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/background_dark"
+    android:padding="@dimen/widget_margin"
+    android:alpha="0.9">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/rateDisplayText"
+        android:textColor="@android:color/white"
+        android:id="@+id/rateDisplayTextView"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:singleLine="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/baseCounterCurrencyText"
+        android:textColor="@android:color/white"
+        android:id="@+id/baseCounterCurrencyTextView"
+        android:layout_above="@+id/rateDisplayTextView"
+        android:layout_centerHorizontal="true"
+        android:singleLine="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/baseCurrencyImageView"
+        android:layout_alignBottom="@+id/baseCounterCurrencyTextView"
+        android:layout_toLeftOf="@+id/baseCounterCurrencyTextView"
+        android:layout_toStartOf="@+id/baseCounterCurrencyTextView" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/counterCurrencyImageView"
+        android:layout_below="@+id/baseCurrencyImageView"
+        android:layout_toRightOf="@+id/baseCounterCurrencyTextView"
+        android:layout_toEndOf="@+id/baseCounterCurrencyTextView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/rateAsOfTimeTextView"
+        android:layout_below="@+id/rateDisplayTextView"
+        android:textColor="@android:color/white"
+        android:layout_centerHorizontal="true"
+        android:text="@string/rateAsOfTimeText"
+        android:singleLine="true"
+        android:textSize="8sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/widgetRefreshTimeText"
+        android:textColor="@android:color/white"
+        android:id="@+id/widgetRefreshTimeTextView"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:singleLine="true"
+        android:textSize="10sp" />
+</RelativeLayout>
