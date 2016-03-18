@@ -5,6 +5,8 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.widget.RemoteViews;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * Implementation of App Widget functionality.
  * App Widget Configuration implemented in {@link MainWidgetConfigureActivity MainWidgetConfigureActivity}
@@ -18,14 +20,13 @@ public class MainWidget extends AppWidgetProvider {
         String counterCurrency = MainWidgetConfigureActivity.loadStringPreference(context, appWidgetId,"counterCurrency");
         String rateProvider = MainWidgetConfigureActivity.loadStringPreference(context, appWidgetId,"rateProvider");
         String baseCurrency = MainWidgetConfigureActivity.loadStringPreference(context, appWidgetId,"baseCurrency");
-        Float baseAmount  = MainWidgetConfigureActivity.loadFloatPreference(context, appWidgetId, "baseAmount");
-        Float feePercentage  = MainWidgetConfigureActivity.loadFloatPreference(context, appWidgetId, "feePercentage");
-        String baseCounterCurrencyText;
-        if (baseAmount > 1){
-            baseCounterCurrencyText = baseAmount.toString() + " " + baseCurrency + "/" + counterCurrency;
-        }
-        else {
-            baseCounterCurrencyText = baseCurrency + "/" + counterCurrency;
+        String baseAmount  = MainWidgetConfigureActivity.loadStringPreference(context, appWidgetId, "baseAmount");
+        String feePercentage  = MainWidgetConfigureActivity.loadStringPreference(context, appWidgetId, "feePercentage");
+        String baseCounterCurrencyText = baseCurrency + "/" + counterCurrency;
+        if(StringUtils.isNumeric(baseAmount)){
+            if (Integer.parseInt(baseAmount) > 1){
+                baseCounterCurrencyText = baseAmount + " " + baseCurrency + "/" + counterCurrency;
+            }
         }
 
         // Construct the RemoteViews object

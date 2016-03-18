@@ -27,8 +27,8 @@ public class MainWidgetConfigureActivity extends Activity {
     private static String rateProvider;
     private static String counterCurrency;
     private static String baseCurrency;
-    private static Double baseAmount = new Double("1");
-    private static Double feePercentage = new Double("0.07");
+    private static String baseAmount = "1";
+    private static String feePercentage = "0.07";
     private static String widgetConfigurationHintText;
 
     private Spinner rateProviderSpinner;
@@ -69,23 +69,23 @@ public class MainWidgetConfigureActivity extends Activity {
         SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
         prefs.putString(PREF_PREFIX_KEY + appWidgetId + "_" + "rateProvider", rateProvider);
         prefs.putString(PREF_PREFIX_KEY + appWidgetId + "_" + "counterCurrency", counterCurrency);
-        prefs.putString(PREF_PREFIX_KEY + appWidgetId + "_" +  "baseCurrency", baseCurrency);
-        prefs.putFloat(PREF_PREFIX_KEY + appWidgetId + "_" +  "baseAmount", Float.parseFloat(baseAmount.toString()));
-        prefs.putFloat(PREF_PREFIX_KEY + appWidgetId + "_" + "feePercentage", Float.parseFloat(feePercentage.toString()));
+        prefs.putString(PREF_PREFIX_KEY + appWidgetId + "_" + "baseCurrency", baseCurrency);
+        prefs.putString(PREF_PREFIX_KEY + appWidgetId + "_" + "baseAmount", baseAmount);
+        prefs.putString(PREF_PREFIX_KEY + appWidgetId + "_" + "feePercentage", feePercentage);
         prefs.apply();
-
+/*
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREFS_NAME, 0);
         Map<String,?> keys = sharedPreferences.getAll();
 
         System.out.println("Prefs:\n");
         for(Map.Entry<String,?> entry : keys.entrySet()){
             System.out.println(entry.getKey() + ": " + entry.getValue().toString());
-        }
+        }*/
     }
 
     static String loadStringPreference(Context context, int appWidgetId, String key) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
-        String value = prefs.getString(PREF_PREFIX_KEY + appWidgetId + "_" +  key, null);
+        String value = prefs.getString(PREF_PREFIX_KEY + appWidgetId + "_" + key, null);
         if (value != null) {
             return value;
         } else {
@@ -93,24 +93,14 @@ public class MainWidgetConfigureActivity extends Activity {
         }
     }
 
-    static Float loadFloatPreference(Context context, int appWidgetId, String key) {
-        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
-        Float value = prefs.getFloat(PREF_PREFIX_KEY + appWidgetId + "_" + key, 0);
-        if (value > 0) {
-            return value;
-        } else {
-            return Float.parseFloat("0");
-        }
-    }
-
     static void deletePreferences(Context context, int appWidgetId) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
         Map<String,?> keys = sharedPreferences.getAll();
-        System.out.println("Prefs to delete:\n");
+       // System.out.println("Prefs to delete:\n");
         for(Map.Entry<String,?> entry : keys.entrySet()){
             if (entry.getKey().contains(PREF_PREFIX_KEY + appWidgetId)) {
-                System.out.println(entry.getKey() + ": " + entry.getValue().toString());
+                //System.out.println(entry.getKey() + ": " + entry.getValue().toString());
                 prefs.remove(entry.getKey());
             }
         }
@@ -148,22 +138,22 @@ public class MainWidgetConfigureActivity extends Activity {
         counterCurrency = counterCurrencySpinner.getSelectedItem().toString();
         baseCurrency = baseCurrencySpinner.getSelectedItem().toString();
         if (!baseAmountEditText.getText().toString().isEmpty()){
-            baseAmount = Double.parseDouble(baseAmountEditText.getText().toString());
+            baseAmount = baseAmountEditText.getText().toString();
         }
         if(!feePercentageEditText.getText().toString().isEmpty()){
-            feePercentage = Double.parseDouble(feePercentageEditText.getText().toString());
+            feePercentage = feePercentageEditText.getText().toString();
         }
         Resources res = getResources();
         //        <string name="widgetConfigurationHintText">"Rate will reflect a buy of %1$s %2$s with 1 %3$s, with a fee of %4$s4 %"</string>
         widgetConfigurationHintText = String.format(res.getString(R.string.widgetConfigurationHintText),
-                baseAmount.toString(), baseCurrency, counterCurrency,feePercentage.toString() );
+                baseAmount, baseCurrency, counterCurrency,feePercentage );
 
         if(
                 (!rateProvider.isEmpty())
                 &&(!counterCurrency.isEmpty())
                 &&(!baseCurrency.isEmpty())
-                &&(!baseAmount.isNaN())
-                &&(!feePercentage.isNaN())
+                &&(!baseAmount.isEmpty())
+                &&(!feePercentage.isEmpty())
                 ){
             widgetConfigurationHintTextView.setText(widgetConfigurationHintText);
             findViewById(R.id.add_button).setEnabled(true);
