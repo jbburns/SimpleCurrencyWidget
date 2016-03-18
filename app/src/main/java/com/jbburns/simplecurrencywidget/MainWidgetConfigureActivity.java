@@ -5,11 +5,15 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 /**
  * The configuration screen for the {@link MainWidget MainWidget} AppWidget.
@@ -17,6 +21,20 @@ import android.widget.Spinner;
 public class MainWidgetConfigureActivity extends Activity {
     private static final String PREFS_NAME = "com.jbburns.simplecurrencywidget.MainWidget";
     private static final String PREF_PREFIX_KEY = "appwidget_";
+
+    private static String rateProvider;
+    private static String counterCurrency;
+    private static String baseCurrency;
+    private static Double baseAmount = new Double("1");
+    private static Double feePercentage = new Double("0.07");
+    private static String widgetConfigurationHintText;
+
+    private Spinner rateProviderSpinner;
+    private Spinner baseCurrencySpinner;
+    private Spinner counterCurrencySpinner;
+    private EditText baseAmountEditText;
+    private EditText feePercentageEditText;
+    private TextView widgetConfigurationHintTextView;
 
     int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
    // EditText mAppWidgetText;
@@ -69,6 +87,38 @@ public class MainWidgetConfigureActivity extends Activity {
         prefs.apply();
     }
 
+    private void validateInputs(){
+
+        rateProvider = rateProviderSpinner.getSelectedItem().toString();
+        counterCurrency = counterCurrencySpinner.getSelectedItem().toString();
+        baseCurrency = baseCurrencySpinner.getSelectedItem().toString();
+        if (!baseAmountEditText.getText().toString().isEmpty()){
+            baseAmount = Double.parseDouble(baseAmountEditText.getText().toString());
+        }
+        if(!feePercentageEditText.getText().toString().isEmpty()){
+            feePercentage = Double.parseDouble(feePercentageEditText.getText().toString());
+        }
+        Resources res = getResources();
+        //        <string name="widgetConfigurationHintText">"Rate will reflect a buy of %1$s %2$s with 1 %3$s, with a fee of %4$s4 %"</string>
+        widgetConfigurationHintText = String.format(res.getString(R.string.widgetConfigurationHintText),
+                baseAmount.toString(), baseCurrency, counterCurrency,feePercentage.toString() );
+
+        if(
+                (!rateProvider.isEmpty())
+                &&(!counterCurrency.isEmpty())
+                &&(!baseCurrency.isEmpty())
+                &&(!baseAmount.isNaN())
+                &&(!feePercentage.isNaN())
+                ){
+            widgetConfigurationHintTextView.setText(widgetConfigurationHintText);
+            findViewById(R.id.add_button).setEnabled(true);
+        }
+        else{
+            widgetConfigurationHintTextView.setText("Selections required");
+            findViewById(R.id.add_button).setEnabled(false);
+        }
+    }
+
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -82,7 +132,15 @@ public class MainWidgetConfigureActivity extends Activity {
 
         setContentView(R.layout.main_widget_configure);
 
-        final Spinner rateProviderSpinner = (Spinner) findViewById(R.id.rateProviderSpinner);
+       // final Spinner rateProviderSpinner = (Spinner) findViewById(R.id.rateProviderSpinner);
+        rateProviderSpinner = (Spinner) findViewById(R.id.rateProviderSpinner);
+        baseCurrencySpinner = (Spinner) findViewById(R.id.baseCurrencySpinner);
+        counterCurrencySpinner = (Spinner) findViewById(R.id.counterCurrencySpinner);
+
+        baseAmountEditText = (EditText) findViewById(R.id.baseAmountEditText);
+        feePercentageEditText = (EditText) findViewById(R.id.feePercentageEditText);
+        widgetConfigurationHintTextView = (TextView) findViewById(R.id.widgetConfigurationHintTextView);
+
         ArrayAdapter<String> rateProvidersAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, rateProvidersArray);
         rateProviderSpinner.setAdapter(rateProvidersAdapter);
 
@@ -90,28 +148,71 @@ public class MainWidgetConfigureActivity extends Activity {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                                        int arg2, long arg3) {
-                Spinner baseCurrencySpinner = (Spinner) findViewById(R.id.baseCurrencySpinner);
-                Spinner counterCurrencySpinner = (Spinner) findViewById(R.id.counterCurrencySpinner);
 
                 String selectedrateProvider = rateProviderSpinner.getItemAtPosition(arg2).toString();
                 String smbctbRateProviderText = getResources().getString(R.string.smbctbRateProviderText);
 
-               if (selectedrateProvider.equals(smbctbRateProviderText)){
-                   final String[] smbctbDefaultBaseCurrenciesArray = getResources().getStringArray(R.array.smbctbDefaultBaseCurrencies);
-                   final String[] smbctbDefaultCounterCurrenciesArray = getResources().getStringArray(R.array.smbctbDefaultCounterCurrencies);
-                   ArrayAdapter<String> smbctbDefaultBaseCurrenciesAdapter = new ArrayAdapter<>(MainWidgetConfigureActivity.this,android.R.layout.simple_spinner_item, smbctbDefaultBaseCurrenciesArray);
-                   baseCurrencySpinner.setAdapter(smbctbDefaultBaseCurrenciesAdapter);
-                   ArrayAdapter<String> smbctbDefaultCounterCurrenciesAdapter = new ArrayAdapter<>(MainWidgetConfigureActivity.this,android.R.layout.simple_spinner_item, smbctbDefaultCounterCurrenciesArray);
-                   counterCurrencySpinner.setAdapter(smbctbDefaultCounterCurrenciesAdapter);
-               }
-              }
+                if (selectedrateProvider.equals(smbctbRateProviderText)) {
+                    final String[] smbctbDefaultBaseCurrenciesArray = getResources().getStringArray(R.array.smbctbDefaultBaseCurrencies);
+                    final String[] smbctbDefaultCounterCurrenciesArray = getResources().getStringArray(R.array.smbctbDefaultCounterCurrencies);
+                    ArrayAdapter<String> smbctbDefaultBaseCurrenciesAdapter = new ArrayAdapter<>(MainWidgetConfigureActivity.this, android.R.layout.simple_spinner_item, smbctbDefaultBaseCurrenciesArray);
+                    baseCurrencySpinner.setAdapter(smbctbDefaultBaseCurrenciesAdapter);
+                    ArrayAdapter<String> smbctbDefaultCounterCurrenciesAdapter = new ArrayAdapter<>(MainWidgetConfigureActivity.this, android.R.layout.simple_spinner_item, smbctbDefaultCounterCurrenciesArray);
+                    counterCurrencySpinner.setAdapter(smbctbDefaultCounterCurrenciesAdapter);
+                }
 
-              @Override
-              public void onNothingSelected(AdapterView<?> arg0) {
-                  // TODO Auto-generated method stub
+                validateInputs();
+            }
 
-              }
-          });
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // TODO Auto-generated method stub
+
+            }
+        });
+
+
+        baseCurrencySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                       int arg2, long arg3) {
+                validateInputs();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+        counterCurrencySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                       int arg2, long arg3) {
+                validateInputs();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+        baseAmountEditText.setOnKeyListener(new EditText.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                validateInputs();
+                return false;
+            }
+        });
+
+        feePercentageEditText.setOnKeyListener(new EditText.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                validateInputs();
+                return false;
+            }
+        });
 
         //mAppWidgetText = (EditText) findViewById(R.id.appwidget_text);
         findViewById(R.id.add_button).setOnClickListener(mOnClickListener);
