@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -81,9 +82,40 @@ public class MainWidgetConfigureActivity extends Activity {
 
         setContentView(R.layout.main_widget_configure);
 
-        Spinner rateProviderSpinner = (Spinner) findViewById(R.id.rateProviderSpinner);
+        final Spinner rateProviderSpinner = (Spinner) findViewById(R.id.rateProviderSpinner);
         ArrayAdapter<String> rateProvidersAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, rateProvidersArray);
         rateProviderSpinner.setAdapter(rateProvidersAdapter);
+
+        rateProviderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                       int arg2, long arg3) {
+                Spinner baseCurrencySpinner = (Spinner) findViewById(R.id.baseCurrencySpinner);
+                Spinner counterCurrencySpinner = (Spinner) findViewById(R.id.counterCurrencySpinner);
+
+                String selectedrateProvider = rateProviderSpinner.getItemAtPosition(arg2).toString();
+                String smbctbRateProviderText = getResources().getString(R.string.smbctbRateProviderText);
+
+               if (selectedrateProvider.equals(smbctbRateProviderText)){
+
+                   final String[] smbctbDefaultBaseCurrenciesArray = getResources().getStringArray(R.array.smbctbDefaultBaseCurrencies);
+                   final String[] smbctbDefaultCounterCurrenciesArray = getResources().getStringArray(R.array.smbctbDefaultCounterCurrencies);
+                   ArrayAdapter<String> smbctbDefaultBaseCurrenciesAdapter = new ArrayAdapter<>(MainWidgetConfigureActivity.this,android.R.layout.simple_spinner_item, smbctbDefaultBaseCurrenciesArray);
+                   baseCurrencySpinner.setAdapter(smbctbDefaultBaseCurrenciesAdapter);
+                   ArrayAdapter<String> smbctbDefaultCounterCurrenciesAdapter = new ArrayAdapter<>(MainWidgetConfigureActivity.this,android.R.layout.simple_spinner_item, smbctbDefaultCounterCurrenciesArray);
+                   counterCurrencySpinner.setAdapter(smbctbDefaultCounterCurrenciesAdapter);
+               }
+
+                  //list.add(s);
+                  // listadapter.notifyDataSetChanged();
+              }
+
+              @Override
+              public void onNothingSelected(AdapterView<?> arg0) {
+                  // TODO Auto-generated method stub
+
+              }
+          });
 
         //mAppWidgetText = (EditText) findViewById(R.id.appwidget_text);
         findViewById(R.id.add_button).setOnClickListener(mOnClickListener);

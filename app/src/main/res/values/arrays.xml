@@ -3,4 +3,20 @@
     <string-array name="rateProviders">
         <item>@string/smbctbRateProviderText</item>
     </string-array>
+    <string-array name="smbctbDefaultBaseCurrencies">
+        <item>@string/USD</item>
+        <item>@string/AUD</item>
+        <item>@string/NZD</item>
+        <item>@string/GBP</item>
+        <item>@string/CAD</item>
+        <item>@string/CHF</item>
+        <item>@string/EUR</item>
+        <item>@string/HKD</item>
+        <item>@string/THB</item>
+        <item>@string/NOK</item>
+        <item>@string/ZAR</item>
+    </string-array>
+    <string-array name="smbctbDefaultCounterCurrencies">
+        <item>@string/JPY</item>
+    </string-array>
 </resources>

@@ -8,4 +8,16 @@
     <string name="widgetRefreshTimeText">Not Updated</string>
     <string name="rateAsOfTimeText">Not Updated</string>
     <string name="smbctbRateProviderText">SMBC Trust Bank (Japan)</string>
+    <string name="JPY">JPY - Japanese Yen</string>
+    <string name="USD">USD - US Dollar</string>
+    <string name="AUD">AUD - Australian Dollar</string>
+    <string name="NZD">NZD - New Zealand Dollar</string>
+    <string name="GBP">GBP - British Pound</string>
+    <string name="CAD">CAD - Canadian Dollar</string>
+    <string name="CHF">CHF - Swiss Franc</string>
+    <string name="EUR">EUR - Euro</string>
+    <string name="HKD">HKD - Hong Kong Dollar</string>
+    <string name="THB">THB - Thai Baht</string>
+    <string name="NOK">NOK - Norwegian Krone</string>
+    <string name="ZAR">ZAR - South African Rand</string>
 </resources>
