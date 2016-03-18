@@ -24,13 +24,6 @@ public class MainWidgetConfigureActivity extends Activity {
     private static final String PREFS_NAME = "com.jbburns.simplecurrencywidget.MainWidget";
     private static final String PREF_PREFIX_KEY = "appwidget_";
 
-    private static String rateProvider;
-    private static String counterCurrency;
-    private static String baseCurrency;
-    private static String baseAmount = "1";
-    private static String feePercentage = "0.07";
-    private static String widgetConfigurationHintText;
-
     private Spinner rateProviderSpinner;
     private Spinner baseCurrencySpinner;
     private Spinner counterCurrencySpinner;
@@ -43,8 +36,24 @@ public class MainWidgetConfigureActivity extends Activity {
         public void onClick(View v) {
             final Context context = MainWidgetConfigureActivity.this;
 
+            String rateProvider = rateProviderSpinner.getSelectedItem().toString();
+            String counterCurrency = counterCurrencySpinner.getSelectedItem().toString();
+            String baseCurrency = baseCurrencySpinner.getSelectedItem().toString();
+            String baseAmount = "1";
+            String feePercentage = "0.7";
+            if (!baseAmountEditText.getText().toString().isEmpty()){
+                baseAmount = baseAmountEditText.getText().toString();
+            }
+            if(!feePercentageEditText.getText().toString().isEmpty()){
+                feePercentage = feePercentageEditText.getText().toString();
+            }
+
             // When the button is clicked, store the preferences locally
-            savePreferences(context, mAppWidgetId);
+            savePreference(context, mAppWidgetId,"rateProvider",rateProvider);
+            savePreference(context, mAppWidgetId,"counterCurrency",counterCurrency);
+            savePreference(context, mAppWidgetId,"baseCurrency",baseCurrency);
+            savePreference(context, mAppWidgetId,"baseAmount",baseAmount);
+            savePreference(context, mAppWidgetId,"feePercentage",feePercentage);
 
             // It is the responsibility of the configuration activity to update the app widget
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
@@ -62,13 +71,9 @@ public class MainWidgetConfigureActivity extends Activity {
         super();
     }
 
-    static void savePreferences(Context context,int appWidgetId){
+    static void savePreference(Context context,int appWidgetId, String key, String value){
         SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
-        prefs.putString(PREF_PREFIX_KEY + appWidgetId + "_" + "rateProvider", rateProvider);
-        prefs.putString(PREF_PREFIX_KEY + appWidgetId + "_" + "counterCurrency", counterCurrency);
-        prefs.putString(PREF_PREFIX_KEY + appWidgetId + "_" + "baseCurrency", baseCurrency);
-        prefs.putString(PREF_PREFIX_KEY + appWidgetId + "_" + "baseAmount", baseAmount);
-        prefs.putString(PREF_PREFIX_KEY + appWidgetId + "_" + "feePercentage", feePercentage);
+        prefs.putString(PREF_PREFIX_KEY + appWidgetId + "_" + key, value);
         prefs.apply();
 /*
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREFS_NAME, 0);
@@ -106,9 +111,11 @@ public class MainWidgetConfigureActivity extends Activity {
 
     private void validateInputs(){
 
-        rateProvider = rateProviderSpinner.getSelectedItem().toString();
-        counterCurrency = counterCurrencySpinner.getSelectedItem().toString();
-        baseCurrency = baseCurrencySpinner.getSelectedItem().toString();
+        String rateProvider = rateProviderSpinner.getSelectedItem().toString();
+        String counterCurrency = counterCurrencySpinner.getSelectedItem().toString();
+        String baseCurrency = baseCurrencySpinner.getSelectedItem().toString();
+        String baseAmount = "1";
+        String feePercentage = "0.7";
         if (!baseAmountEditText.getText().toString().isEmpty()){
             baseAmount = baseAmountEditText.getText().toString();
         }
@@ -116,8 +123,8 @@ public class MainWidgetConfigureActivity extends Activity {
             feePercentage = feePercentageEditText.getText().toString();
         }
         Resources res = getResources();
-        widgetConfigurationHintText = String.format(res.getString(R.string.widgetConfigurationHintText),
-                baseAmount, baseCurrency, counterCurrency,feePercentage );
+        String widgetConfigurationHintText = String.format(res.getString(R.string.widgetConfigurationHintText),
+                baseAmount, baseCurrency, counterCurrency, feePercentage);
 
         if(
                 (!rateProvider.isEmpty())
