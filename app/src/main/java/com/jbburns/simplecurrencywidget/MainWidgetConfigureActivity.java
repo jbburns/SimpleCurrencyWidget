@@ -39,14 +39,11 @@ public class MainWidgetConfigureActivity extends Activity {
     private TextView widgetConfigurationHintTextView;
 
     int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
-   // EditText mAppWidgetText;
     View.OnClickListener mOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             final Context context = MainWidgetConfigureActivity.this;
 
-            // When the button is clicked, store the string locally
-            //String widgetText = mAppWidgetText.getText().toString();
-            //saveTitlePref(context, mAppWidgetId, widgetText);
+            // When the button is clicked, store the preferences locally
             savePreferences(context, mAppWidgetId);
 
             // It is the responsibility of the configuration activity to update the app widget
@@ -107,31 +104,6 @@ public class MainWidgetConfigureActivity extends Activity {
         prefs.apply();
     }
 
-    // Write the prefix to the SharedPreferences object for this widget
-    static void saveTitlePref(Context context, int appWidgetId, String text) {
-        SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
-        prefs.putString(PREF_PREFIX_KEY + appWidgetId, text);
-        prefs.apply();
-    }
-
-    // Read the prefix from the SharedPreferences object for this widget.
-    // If there is no preference saved, get the default from a resource
-    static String loadTitlePref(Context context, int appWidgetId) {
-        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
-        String titleValue = prefs.getString(PREF_PREFIX_KEY + appWidgetId, null);
-        if (titleValue != null) {
-            return titleValue;
-        } else {
-            return context.getString(R.string.appwidget_text);
-        }
-    }
-
-    static void deleteTitlePref(Context context, int appWidgetId) {
-        SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
-        prefs.remove(PREF_PREFIX_KEY + appWidgetId);
-        prefs.apply();
-    }
-
     private void validateInputs(){
 
         rateProvider = rateProviderSpinner.getSelectedItem().toString();
@@ -144,7 +116,6 @@ public class MainWidgetConfigureActivity extends Activity {
             feePercentage = feePercentageEditText.getText().toString();
         }
         Resources res = getResources();
-        //        <string name="widgetConfigurationHintText">"Rate will reflect a buy of %1$s %2$s with 1 %3$s, with a fee of %4$s4 %"</string>
         widgetConfigurationHintText = String.format(res.getString(R.string.widgetConfigurationHintText),
                 baseAmount, baseCurrency, counterCurrency,feePercentage );
 
@@ -172,12 +143,10 @@ public class MainWidgetConfigureActivity extends Activity {
         // out of the widget placement if the user presses the back button.
         setResult(RESULT_CANCELED);
 
-       // SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         final String[] rateProvidersArray = getResources().getStringArray(R.array.rateProviders);
 
         setContentView(R.layout.main_widget_configure);
 
-       // final Spinner rateProviderSpinner = (Spinner) findViewById(R.id.rateProviderSpinner);
         rateProviderSpinner = (Spinner) findViewById(R.id.rateProviderSpinner);
         baseCurrencySpinner = (Spinner) findViewById(R.id.baseCurrencySpinner);
         counterCurrencySpinner = (Spinner) findViewById(R.id.counterCurrencySpinner);
@@ -259,7 +228,6 @@ public class MainWidgetConfigureActivity extends Activity {
             }
         });
 
-        //mAppWidgetText = (EditText) findViewById(R.id.appwidget_text);
         findViewById(R.id.add_button).setOnClickListener(mOnClickListener);
 
         // Find the widget id from the intent.
@@ -275,8 +243,6 @@ public class MainWidgetConfigureActivity extends Activity {
             finish();
             return;
         }
-
-        //mAppWidgetText.setText(loadTitlePref(MainWidgetConfigureActivity.this, mAppWidgetId));
     }
 }
 

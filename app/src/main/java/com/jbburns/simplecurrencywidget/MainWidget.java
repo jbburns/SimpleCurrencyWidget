@@ -16,7 +16,6 @@ public class MainWidget extends AppWidgetProvider {
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
 
-       // CharSequence widgetText = MainWidgetConfigureActivity.loadTitlePref(context, appWidgetId);
         String counterCurrency = MainWidgetConfigureActivity.loadStringPreference(context, appWidgetId,"counterCurrency");
         String rateProvider = MainWidgetConfigureActivity.loadStringPreference(context, appWidgetId,"rateProvider");
         String baseCurrency = MainWidgetConfigureActivity.loadStringPreference(context, appWidgetId,"baseCurrency");
@@ -31,7 +30,6 @@ public class MainWidget extends AppWidgetProvider {
 
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.main_widget);
-        //views.setTextViewText(R.id.appwidget_text, widgetText);
         views.setTextViewText(R.id.baseCounterCurrencyTextView,baseCounterCurrencyText);
 
         // Instruct the widget manager to update the widget
