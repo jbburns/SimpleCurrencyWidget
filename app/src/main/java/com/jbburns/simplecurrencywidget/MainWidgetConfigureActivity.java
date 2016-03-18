@@ -7,15 +7,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 /**
  * The configuration screen for the {@link MainWidget MainWidget} AppWidget.
  */
 public class MainWidgetConfigureActivity extends Activity {
-
     private static final String PREFS_NAME = "com.jbburns.simplecurrencywidget.MainWidget";
     private static final String PREF_PREFIX_KEY = "appwidget_";
+
     int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
    // EditText mAppWidgetText;
     View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -75,7 +76,15 @@ public class MainWidgetConfigureActivity extends Activity {
         // out of the widget placement if the user presses the back button.
         setResult(RESULT_CANCELED);
 
+       // SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        final String[] rateProvidersArray = getResources().getStringArray(R.array.rateProviders);
+
         setContentView(R.layout.main_widget_configure);
+
+        Spinner rateProviderSpinner = (Spinner) findViewById(R.id.rateProviderSpinner);
+        ArrayAdapter<String> rateProvidersAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, rateProvidersArray);
+        rateProviderSpinner.setAdapter(rateProvidersAdapter);
+
         //mAppWidgetText = (EditText) findViewById(R.id.appwidget_text);
         findViewById(R.id.add_button).setOnClickListener(mOnClickListener);
 

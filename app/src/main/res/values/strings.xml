@@ -7,4 +7,5 @@
     <string name="baseCounterCurrencyText">Not Set/Not Set</string>
     <string name="widgetRefreshTimeText">Not Updated</string>
     <string name="rateAsOfTimeText">Not Updated</string>
+    <string name="smbctbRateProviderText">SMBC Trust Bank (Japan)</string>
 </resources>
