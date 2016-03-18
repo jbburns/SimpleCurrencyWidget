@@ -15,6 +15,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.util.Map;
+
 /**
  * The configuration screen for the {@link MainWidget MainWidget} AppWidget.
  */
@@ -45,6 +47,7 @@ public class MainWidgetConfigureActivity extends Activity {
             // When the button is clicked, store the string locally
             //String widgetText = mAppWidgetText.getText().toString();
             //saveTitlePref(context, mAppWidgetId, widgetText);
+            savePreferences(context, mAppWidgetId);
 
             // It is the responsibility of the configuration activity to update the app widget
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
@@ -60,6 +63,58 @@ public class MainWidgetConfigureActivity extends Activity {
 
     public MainWidgetConfigureActivity() {
         super();
+    }
+
+    static void savePreferences(Context context,int appWidgetId){
+        SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
+        prefs.putString(PREF_PREFIX_KEY + appWidgetId + "_" + "rateProvider", rateProvider);
+        prefs.putString(PREF_PREFIX_KEY + appWidgetId + "_" + "counterCurrency", counterCurrency);
+        prefs.putString(PREF_PREFIX_KEY + appWidgetId + "_" +  "baseCurrency", baseCurrency);
+        prefs.putFloat(PREF_PREFIX_KEY + appWidgetId + "_" +  "baseAmount", Float.parseFloat(baseAmount.toString()));
+        prefs.putFloat(PREF_PREFIX_KEY + appWidgetId + "_" + "feePercentage", Float.parseFloat(feePercentage.toString()));
+        prefs.apply();
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFS_NAME, 0);
+        Map<String,?> keys = sharedPreferences.getAll();
+
+        System.out.println("Prefs:\n");
+        for(Map.Entry<String,?> entry : keys.entrySet()){
+            System.out.println(entry.getKey() + ": " + entry.getValue().toString());
+        }
+    }
+
+    static String loadStringPreference(Context context, int appWidgetId, String key) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
+        String value = prefs.getString(PREF_PREFIX_KEY + appWidgetId + "_" +  key, null);
+        if (value != null) {
+            return value;
+        } else {
+            return "Not Set";
+        }
+    }
+
+    static Float loadFloatPreference(Context context, int appWidgetId, String key) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
+        Float value = prefs.getFloat(PREF_PREFIX_KEY + appWidgetId + "_" + key, 0);
+        if (value > 0) {
+            return value;
+        } else {
+            return Float.parseFloat("0");
+        }
+    }
+
+    static void deletePreferences(Context context, int appWidgetId) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
+        Map<String,?> keys = sharedPreferences.getAll();
+        System.out.println("Prefs to delete:\n");
+        for(Map.Entry<String,?> entry : keys.entrySet()){
+            if (entry.getKey().contains(PREF_PREFIX_KEY + appWidgetId)) {
+                System.out.println(entry.getKey() + ": " + entry.getValue().toString());
+                prefs.remove(entry.getKey());
+            }
+        }
+        prefs.apply();
     }
 
     // Write the prefix to the SharedPreferences object for this widget

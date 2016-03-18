@@ -19,4 +19,18 @@
     <string-array name="smbctbDefaultCounterCurrencies">
         <item>@string/JPY</item>
     </string-array>
+    <string-array  name="ISO4217_CurrencyName">
+        <item name="JPY">Japanese Yen</item>
+        <item name="USD">US Dollar</item>
+        <item name="AUD">Australian Dollar</item>
+        <item name="NZD">New Zealand Dollar</item>
+        <item name="GBP">British Pound</item>
+        <item name="CAD">Canadian Dollar</item>
+        <item name="CHF">Swiss Franc</item>
+        <item name="EUR">Euro</item>
+        <item name="HKD">Hong Kong Dollar</item>
+        <item name="THB">Thai Baht</item>
+        <item name="NOK">Norwegian Krone</item>
+        <item name="ZAR">South African Rand</item>
+    </string-array>
 </resources>
