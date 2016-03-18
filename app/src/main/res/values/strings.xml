@@ -20,4 +20,5 @@
     <string name="THB">THB - Thai Baht</string>
     <string name="NOK">NOK - Norwegian Krone</string>
     <string name="ZAR">ZAR - South African Rand</string>
+    <string name="widgetConfigurationHintText">Rate will reflect a buy of $base_amount $base_currency with 1 $counter_currency, with a fee of $fee_percent%</string>
 </resources>

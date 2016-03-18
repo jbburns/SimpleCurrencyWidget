@@ -104,9 +104,6 @@ public class MainWidgetConfigureActivity extends Activity {
                    ArrayAdapter<String> smbctbDefaultCounterCurrenciesAdapter = new ArrayAdapter<>(MainWidgetConfigureActivity.this,android.R.layout.simple_spinner_item, smbctbDefaultCounterCurrenciesArray);
                    counterCurrencySpinner.setAdapter(smbctbDefaultCounterCurrenciesAdapter);
                }
-
-                  //list.add(s);
-                  // listadapter.notifyDataSetChanged();
               }
 
               @Override
