@@ -97,7 +97,6 @@ public class MainWidgetConfigureActivity extends Activity {
                 String smbctbRateProviderText = getResources().getString(R.string.smbctbRateProviderText);
 
                if (selectedrateProvider.equals(smbctbRateProviderText)){
-
                    final String[] smbctbDefaultBaseCurrenciesArray = getResources().getStringArray(R.array.smbctbDefaultBaseCurrencies);
                    final String[] smbctbDefaultCounterCurrenciesArray = getResources().getStringArray(R.array.smbctbDefaultCounterCurrencies);
                    ArrayAdapter<String> smbctbDefaultBaseCurrenciesAdapter = new ArrayAdapter<>(MainWidgetConfigureActivity.this,android.R.layout.simple_spinner_item, smbctbDefaultBaseCurrenciesArray);

@@ -27,19 +27,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Base Currency (To)"
-        android:id="@+id/baseCurrencyTextView" />
-
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/baseCurrencySpinner"
-        android:enabled="false" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Counter Currency (From)"
         android:id="@+id/counterCurrencyTextView" />
 
@@ -48,6 +35,19 @@
         android:layout_height="wrap_content"
         android:id="@+id/counterCurrencySpinner"
         android:enabled="false"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Base Currency (To)"
+        android:id="@+id/baseCurrencyTextView" />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/baseCurrencySpinner"
+        android:enabled="false" />
 
     <TextView
         android:layout_width="wrap_content"
