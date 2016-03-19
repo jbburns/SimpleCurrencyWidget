@@ -32,8 +32,6 @@ public class SMBCTBRateProvider {
         for (int i = 0; i < rateList.size(); i++){
             SMBCTBRate SMBCTBRate = rateList.get(i);
             if (SMBCTBRate.getCounterCurrency().equals(currency)) {
-                //System.out.println(rateList.get(i).toString());
-                //rate = SMBCTBRate.getMidRate();
                 rate = SMBCTBRate;
             }
         }
@@ -102,10 +100,8 @@ public class SMBCTBRateProvider {
             String name = parser.getName();
             String attributeName = parser.getAttributeName(0);
             String attributeValue = parser.getAttributeValue(ns, parser.getAttributeName(0));
-            // System.out.println("Name: " + name + " attr name: " + attributeName + " Attr value" + attributeValue);
             // Starts by looking for the entry tag
             if (name.equals("ratetable") && attributeName.equals("id") && attributeValue.equals("foreignexchange1")) {
-                //  System.out.println("Got inside the foreignexchange1 bit");
                 rateList = parseRateTable(parser);
             } else {
                 skip(parser);
@@ -115,7 +111,6 @@ public class SMBCTBRateProvider {
     }
 
     private List parseRateTable(XmlPullParser parser) throws XmlPullParserException, IOException,ParseException {
-        // parser.require(XmlPullParser.START_TAG, ns, "content");
         List rateList = null;
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.getEventType() != XmlPullParser.START_TAG) {
@@ -124,10 +119,8 @@ public class SMBCTBRateProvider {
             String name = parser.getName();
             String attributeName = parser.getAttributeName(0);
             String attributeValue = parser.getAttributeValue(ns, parser.getAttributeName(0));
-            //System.out.println("Name: " + name + " attr name: " + attributeName + " Attr value" + attributeValue);
             // Starts by looking for the entry tag
             if (name.equals("content") && attributeName.equals("font-language") && attributeValue.equals("en")) {
-                // System.out.println("Got inside the language en bit");
                 parser.next();
                 Date asOfTime = readCaption(parser);
                 rateList = readRates(parser, asOfTime);
@@ -143,34 +136,24 @@ public class SMBCTBRateProvider {
         parser.require(XmlPullParser.START_TAG, ns, "caption");
         String caption = readText(parser);
         parser.require(XmlPullParser.END_TAG, ns, "caption");
-
-        //System.out.println(caption);
-
         String cutCaption = caption.replaceAll("As of : ", "");
         SimpleDateFormat inputFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
         Date asOfTime = inputFormat.parse(cutCaption);
-
-        //  System.out.println(asOfTime.toString());
 
         return asOfTime;
     }
 
     private List readRates(XmlPullParser parser, Date asOfTime) throws  XmlPullParserException, IOException, ParseException{
         List rates = new ArrayList();
-        //  System.out.println("Got inside readRates");
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.getEventType() != XmlPullParser.START_TAG) {
                 continue;
             }
             String name = parser.getName();
             if (name.equals("row") && (parser.getAttributeCount() == 0)) {
-                //  System.out.println("Got inside a row");
-                // parser.next(); //move to col tag
                 SMBCTBRate rate = readRate(parser,asOfTime);
-                //System.out.println(rate.toString());
                 rates.add(rate);
             } else {
-                // System.out.println("Skipped a row");
                 skip(parser);
             }
         }

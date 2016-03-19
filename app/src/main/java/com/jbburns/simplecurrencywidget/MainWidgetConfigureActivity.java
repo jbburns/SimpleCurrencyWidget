@@ -186,10 +186,7 @@ public class MainWidgetConfigureActivity extends Activity {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
-                // TODO Auto-generated method stub
-
-            }
+            public void onNothingSelected(AdapterView<?> arg0) {}
         });
 
 
@@ -201,9 +198,7 @@ public class MainWidgetConfigureActivity extends Activity {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
-                // TODO Auto-generated method stub
-            }
+            public void onNothingSelected(AdapterView<?> arg0) {}
         });
 
         counterCurrencySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -214,9 +209,7 @@ public class MainWidgetConfigureActivity extends Activity {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
-                // TODO Auto-generated method stub
-            }
+            public void onNothingSelected(AdapterView<?> arg0) {}
         });
 
         baseAmountEditText.setOnKeyListener(new EditText.OnKeyListener() {
