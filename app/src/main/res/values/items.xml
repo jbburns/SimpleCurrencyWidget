@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="baseAmount" type="integer" format="float">1</item>
+    <item name="feePercent" type="integer" format="float">0.7</item>
+</resources>

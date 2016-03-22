@@ -27,31 +27,33 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Base Currency (To)"
-        android:id="@+id/baseCurrencyTextView" />
-
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/baseCurrencySpinner" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Counter Currency (From)"
         android:id="@+id/counterCurrencyTextView" />
 
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/counterCurrencyTextViewSpinner" />
+        android:id="@+id/counterCurrencySpinner"
+        android:enabled="false"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Base Amount"
+        android:text="Base Currency (To)"
+        android:id="@+id/baseCurrencyTextView" />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/baseCurrencySpinner"
+        android:enabled="false" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Base Amount (Buy)"
         android:id="@+id/baseAmountTextView" />
 
     <EditText
@@ -60,7 +62,7 @@
         android:inputType="numberDecimal"
         android:ems="10"
         android:id="@+id/baseAmountEditText"
-        android:hint="1" />
+        android:hint="@integer/baseAmount" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -75,13 +77,22 @@
         android:inputType="numberDecimal"
         android:ems="10"
         android:id="@+id/feePercentageEditText"
-        android:hint="0.7" />
+        android:hint="@integer/feePercent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/widgetConfigurationHintText"
+        android:id="@+id/widgetConfigurationHintTextView"
+        android:visibility="visible" />
 
     <Button
         android:id="@+id/add_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="@string/add_widget" />
+        android:text="@string/add_widget"
+        android:enabled="false" />
 
 </LinearLayout>

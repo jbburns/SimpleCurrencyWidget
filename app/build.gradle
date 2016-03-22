@@ -20,7 +20,18 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.2.1'
+    compile 'org.apache.directory.studio:org.apache.commons.lang:2.6'
+    compile 'org.apache.directory.studio:org.apache.commons.io:2.4'
+}
+
+android.packagingOptions {
+    pickFirst 'META-INF/NOTICE'
+    pickFirst 'META-INF/NOTICE.txt'
+    pickFirst 'META-INF/LICENSE'
+    pickFirst 'META-INF/LICENSE.txt'
+    pickFirst 'META-INF/DEPENDENCIES'
+    pickFirst 'META-INF/DEPENDENCIES.txt'
 }
