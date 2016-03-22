@@ -124,7 +124,7 @@ public class MainWidgetConfigureActivity extends Activity {
         }
         Resources res = getResources();
         String widgetConfigurationHintText = String.format(res.getString(R.string.widgetConfigurationHintText),
-                baseAmount, baseCurrency, counterCurrency, feePercentage);
+                baseAmount, baseCurrency, counterCurrency, feePercentage, counterCurrency);
 
         if(
                 (!rateProvider.isEmpty())

@@ -29,7 +29,7 @@ public class MainWidget extends AppWidgetProvider {
 
         // Set button click intent
         Intent intent = new Intent(context, MainWidget.class);
-        intent.setAction(REFRESH_BUTTON_CLICKED+String.valueOf(appWidgetId));
+        intent.setAction(REFRESH_BUTTON_CLICKED + String.valueOf(appWidgetId));
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
         views.setOnClickPendingIntent(R.id.refreshButton, pendingIntent);
 
@@ -61,7 +61,7 @@ public class MainWidget extends AppWidgetProvider {
             if (!NumberUtils.isNumber(feePercentage)){
                 feePercentage = "0";
             }
-            finalRate = (rate * (1+(Double.parseDouble(feePercentage)/100))) * Double.parseDouble(baseAmount);
+            finalRate = (rate + Double.parseDouble(feePercentage)) * Double.parseDouble(baseAmount);
 
             if (Double.parseDouble(feePercentage) > 0) {
                 finalRateString = String.format("%.2f", finalRate) + "*";
