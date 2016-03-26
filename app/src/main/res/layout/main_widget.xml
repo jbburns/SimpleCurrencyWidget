@@ -1,9 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/background_dark"
     android:padding="@dimen/widget_margin"
-    android:alpha="0.9">
+    android:background="#022b49">
 
 
     <TextView
@@ -15,7 +14,11 @@
         android:id="@+id/rateDisplayTextView"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:singleLine="true" />
+        android:singleLine="true"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-thin"
+        android:textSize="30sp"
+        />
 
     <TextView
         android:layout_width="wrap_content"
@@ -26,6 +29,7 @@
         android:id="@+id/baseCounterCurrencyTextView"
         android:layout_above="@+id/rateDisplayTextView"
         android:layout_centerHorizontal="true"
+        android:padding="@dimen/widget_margin"
         android:singleLine="true" />
 
     <ImageView
