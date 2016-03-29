@@ -38,10 +38,15 @@ public class MainWidget extends AppWidgetProvider {
         String baseCurrency = MainWidgetConfigureActivity.loadStringPreference(context, appWidgetId,"baseCurrency");
         String baseAmount  = MainWidgetConfigureActivity.loadStringPreference(context, appWidgetId, "baseAmount");
         String feePercentage  = MainWidgetConfigureActivity.loadStringPreference(context, appWidgetId, "feePercentage");
+        String buySell  = MainWidgetConfigureActivity.loadStringPreference(context, appWidgetId, "buySell");
         String baseCounterCurrencyText = baseCurrency + "/" + counterCurrency;
         if(NumberUtils.isNumber(baseAmount)){
-            if (Integer.parseInt(baseAmount) > 1){
-                baseCounterCurrencyText = baseAmount + " " + baseCurrency + "/" + counterCurrency;
+            if (Double.parseDouble(baseAmount) != 1){
+                if (buySell.equals("Sell")) {
+                    baseCounterCurrencyText = baseCurrency + "/" + baseAmount + " " + counterCurrency;
+                } else {
+                    baseCounterCurrencyText = baseAmount + " " + baseCurrency + "/" + counterCurrency;
+                }
             }
         }
         views.setTextViewText(R.id.baseCounterCurrencyTextView, baseCounterCurrencyText);
@@ -57,11 +62,16 @@ public class MainWidget extends AppWidgetProvider {
             asOfTime = SMBCTBRate.getAsOfTime();
         }
 
+        // Calc the final rate
         if(rate != null){
             if (!NumberUtils.isNumber(feePercentage)){
                 feePercentage = "0";
             }
-            finalRate = (rate + Double.parseDouble(feePercentage)) * Double.parseDouble(baseAmount);
+            if (buySell.equals("Sell")){
+                finalRate =  Double.parseDouble(baseAmount) / (rate + Double.parseDouble(feePercentage));
+            } else {
+                finalRate = (rate + Double.parseDouble(feePercentage)) * Double.parseDouble(baseAmount);
+            }
 
             if (Double.parseDouble(feePercentage) > 0) {
                 finalRateString = String.format("%.2f", finalRate) + "*";

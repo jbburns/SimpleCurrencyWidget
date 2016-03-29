@@ -6,13 +6,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import java.util.Map;
@@ -30,6 +33,8 @@ public class MainWidgetConfigureActivity extends Activity {
     private EditText baseAmountEditText;
     private EditText feePercentageEditText;
     private TextView widgetConfigurationHintTextView;
+    private Switch buySellSwitch;
+    private String buySell = "Buy";
 
     int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
     View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -44,16 +49,17 @@ public class MainWidgetConfigureActivity extends Activity {
             if (!baseAmountEditText.getText().toString().isEmpty()){
                 baseAmount = baseAmountEditText.getText().toString();
             }
-            if(!feePercentageEditText.getText().toString().isEmpty()){
+            if(!feePercentageEditText.getText().toString().isEmpty()) {
                 feePercentage = feePercentageEditText.getText().toString();
             }
 
             // When the button is clicked, store the preferences locally
             savePreference(context, mAppWidgetId,"rateProvider",rateProvider);
-            savePreference(context, mAppWidgetId,"counterCurrency",counterCurrency);
-            savePreference(context, mAppWidgetId,"baseCurrency",baseCurrency);
-            savePreference(context, mAppWidgetId,"baseAmount",baseAmount);
-            savePreference(context, mAppWidgetId,"feePercentage",feePercentage);
+            savePreference(context, mAppWidgetId, "counterCurrency", counterCurrency);
+            savePreference(context, mAppWidgetId, "baseCurrency", baseCurrency);
+            savePreference(context, mAppWidgetId, "baseAmount", baseAmount);
+            savePreference(context, mAppWidgetId, "feePercentage", feePercentage);
+            savePreference(context, mAppWidgetId, "buySell", buySell);
 
             // It is the responsibility of the configuration activity to update the app widget
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
@@ -109,6 +115,16 @@ public class MainWidgetConfigureActivity extends Activity {
         prefs.apply();
     }
 
+    private boolean isDouble (String input){
+        boolean isDouble = true;
+        try{
+            Double.parseDouble(input);
+        } catch (java.lang.NumberFormatException e){
+            isDouble = false;
+        }
+        return isDouble;
+    }
+
     private void validateInputs(){
 
         String rateProvider = rateProviderSpinner.getSelectedItem().toString();
@@ -123,8 +139,15 @@ public class MainWidgetConfigureActivity extends Activity {
             feePercentage = feePercentageEditText.getText().toString();
         }
         Resources res = getResources();
-        String widgetConfigurationHintText = String.format(res.getString(R.string.widgetConfigurationHintText),
-                baseAmount, baseCurrency, counterCurrency, feePercentage, counterCurrency);
+        String widgetConfigurationHintText;
+        if (buySellSwitch.isChecked()){
+            widgetConfigurationHintText= String.format(res.getString(R.string.widgetConfigurationHintSellText),
+                    baseCurrency, baseAmount, counterCurrency, feePercentage, counterCurrency);
+        }
+        else{
+            widgetConfigurationHintText= String.format(res.getString(R.string.widgetConfigurationHintBuyText),
+                    baseAmount, baseCurrency, counterCurrency, feePercentage, counterCurrency);
+        }
 
         if(
                 (!rateProvider.isEmpty())
@@ -133,12 +156,31 @@ public class MainWidgetConfigureActivity extends Activity {
                 &&(!baseAmount.isEmpty())
                 &&(!feePercentage.isEmpty())
                 ){
-            widgetConfigurationHintTextView.setText(widgetConfigurationHintText);
-            findViewById(R.id.add_button).setEnabled(true);
+            if (isDouble(baseAmount)){
+                if ( Double.parseDouble(baseAmount) == Double.parseDouble("0") ) {
+                    widgetConfigurationHintTextView.setText("Base amount cannot be zero");
+                    widgetConfigurationHintTextView.setTextColor(Color.RED);
+                    findViewById(R.id.add_button).setEnabled(false);
+                    findViewById(R.id.add_button).setSaveEnabled(false);
+                }
+                else {
+                    widgetConfigurationHintTextView.setText(widgetConfigurationHintText);
+                    findViewById(R.id.add_button).setEnabled(true);
+                    widgetConfigurationHintTextView.setTextColor(Color.BLACK);
+                }
+            }
+            else {
+                widgetConfigurationHintTextView.setText("Base amount unrecognized / not a valid decimal number");
+                widgetConfigurationHintTextView.setTextColor(Color.RED);
+                findViewById(R.id.add_button).setEnabled(false);
+                findViewById(R.id.add_button).setSaveEnabled(false);
+            }
         }
         else{
             widgetConfigurationHintTextView.setText("Selections required");
+            widgetConfigurationHintTextView.setTextColor(Color.RED);
             findViewById(R.id.add_button).setEnabled(false);
+            findViewById(R.id.add_button).setSaveEnabled(false);
         }
     }
 
@@ -161,6 +203,8 @@ public class MainWidgetConfigureActivity extends Activity {
         baseAmountEditText = (EditText) findViewById(R.id.baseAmountEditText);
         feePercentageEditText = (EditText) findViewById(R.id.feePercentageEditText);
         widgetConfigurationHintTextView = (TextView) findViewById(R.id.widgetConfigurationHintTextView);
+
+        buySellSwitch = (Switch) findViewById(R.id.buySellSwitch);
 
         ArrayAdapter<String> rateProvidersAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, rateProvidersArray);
         rateProviderSpinner.setAdapter(rateProvidersAdapter);
@@ -186,7 +230,8 @@ public class MainWidgetConfigureActivity extends Activity {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> arg0) {}
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
         });
 
 
@@ -198,7 +243,8 @@ public class MainWidgetConfigureActivity extends Activity {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> arg0) {}
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
         });
 
         counterCurrencySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -209,7 +255,8 @@ public class MainWidgetConfigureActivity extends Activity {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> arg0) {}
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
         });
 
         baseAmountEditText.setOnKeyListener(new EditText.OnKeyListener() {
@@ -227,6 +274,24 @@ public class MainWidgetConfigureActivity extends Activity {
                 return false;
             }
         });
+
+        buySellSwitch.setOnCheckedChangeListener(
+            new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    TextView baseAmountTextView = (TextView) findViewById(R.id.baseAmountTextView);
+                    if(isChecked){
+                        baseAmountTextView.setText(getResources().getString(R.string.baseAmountSellText));
+                        buySell = "Sell";
+                    }
+                    else{
+                        baseAmountTextView.setText(getResources().getString(R.string.baseAmountBuyText));
+                        buySell = "Buy";
+                    }
+                    validateInputs();
+                }
+            }
+        );
 
         findViewById(R.id.add_button).setOnClickListener(mOnClickListener);
 

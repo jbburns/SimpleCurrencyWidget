@@ -49,11 +49,21 @@
         android:id="@+id/baseCurrencySpinner"
         android:enabled="false" />
 
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/buySellSwitch"
+        android:checked="false"
+        android:showText="true"
+        android:textOn="Sell"
+        android:textOff="Buy"
+        android:enabled="true" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Base Amount (Buy)"
+        android:text="@string/baseAmountBuyText"
         android:id="@+id/baseAmountTextView" />
 
     <EditText
@@ -83,7 +93,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/widgetConfigurationHintText"
+        android:text="@string/widgetConfigurationHintBuyText"
         android:id="@+id/widgetConfigurationHintTextView"
         android:visibility="visible" />
 
